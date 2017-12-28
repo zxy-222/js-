@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>js事件绑定的几种方式</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: rgb(149, 150, 163);
+      
+    }
+    .ul_list,.one,.two,.three {
+      margin: 40px;
+      color: #fff;
+    }
+    ul,li{
+      list-style:none;
+    }
+    li {
+      margin-top:10px;
+    }
+    .one input,.two #demo,.three #dem {
+      width: 100px;
+      height:100px;
+      border: 1px dashed #ccc;
+      border-radius: 50%;
+      font-size: 30px;
+      background-color: rgb(113, 224, 191);
+      font-family: "全新硬笔行书简";
+      margin-left: 250px;
+      margin-top: 20px;
+    }
+    .one input.er{
+      background-color: rgb(219, 143, 143);
+    }
+    .two #demo{
+      width: 200px;
+      height: 200px;
+      font-size: 22px;
+      background-color: rgb(207, 187, 71);
+    }
+    table {
+      border-collapse: collapse;
+    }
+    th,td {
+      border: 2px solid rgb(20, 19, 19);
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="ul_list">
+    <ul>在JavaScript中，有三种常用额绑定事件的方法：
+      <li>1、在DOM元素中直接绑定;</li>
+      <li>2、在JavaScript代码中绑定：</li>
+      <li>3、绑定事件监听函数</li>
+    </ul>
+  </div>
+  <div class="one">
+    <ul>一、在DOM元素中直接绑定
+    <li>这里的DOM元素可以理解为HTML标签。在JavaScript支持在标签中直接绑定事件，语法：onxxx = "JavaScript Code"</li>
+    <li>onxxx为事件名称。例如，鼠标单击事件onclick，鼠标双击事件ondouble，鼠标移出事件onmouseout等。</li>
+    <li>JavaScript Code为处理事件的JavaScript代码。
+      <ul>
+        <li>1、原生函数
+          <li>1、&lt;input onclick="alert('原生函数') value="点我" type="button"&gt;</li>
+          <input type="button" value="点我" onclick="alert('原生函数')"/>
+        </li>
+        <li>2、自定义函数
+          <li>1、&lt;input onclick="myAlert()" value="点我" type="button"&gt;
+            <br>
+            &lt;script&gt;<br>
+              function myAlert(){
+                alert("自定义函数")
+              } 
+              <br>
+              &lt;/script&gt;
+              <br>
+              <input class="er" type="button" value="点我" onclick="myAlert()"/>
+              <script>
+                function myAlert(){
+                  alert("自定义函数")
+                }
+              </script>
+          </li>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  </div>
+  <div class="two">
+    <ul>二、在JavaScript代码中绑定
+      <li>在JavaScript代码中绑定事件可以使JavaScript代码与HTML标签分离文档结构清晰，便于管理和开发。</li>
+      <li>在JavaScript代码中绑定事件的语法为：
+        <br>
+        elementObject.onclick=function(){
+          //事件处理代码
+        }
+      </li>
+      <li>elementObject为DOM对象，即DOM元素</li>
+      <li>例子：为id="demo"的按钮绑定一个事件，显示它的type属性：</li>
+      <li>1、&lt;input id="demo" type="button" value="点我,显示type属性"&gt;
+        <br>
+      2、&lt;script&gt;
+        <br>
+        document.getElementById("demo").onclick=function(){
+          <br>
+            &nbsp;&nbsp;&nbsp; alert(this.getAttribute("type"))
+          <br>
+        }
+        <br>
+        &lt;/script&gt;
+        <br>
+        <input id="demo" type="button" value="点击,显示 type 属性" />
+        <script>
+          document.getElementById("demo").onclick=function(){
+            alert(this.getAttribute("type"));
+          }
+        </script>
+      </li>
+      
+    </ul>
+  </div>
+  <div class="three">
+    <ul>三、绑定事件监听函数
+      <li>绑定事件的另一种方法是用addEventListener()或attachEvent()来绑定事件监听函数</li>
+      <li>addEventListener()函数语法：
+        <br>
+        elementObjec.addEventListener( eventName, handle, useCapture )
+      </li>
+      <li>
+        <table>
+          <tr>
+            <th>参数</th>
+            <th>说明</th>
+          </tr>
+          <tr>
+            <td>elementObject</td>
+            <td>DOM对象(即DOM元素)</td>
+          </tr>
+          <tr>
+            <td>eventName</td>
+            <td>事件名称。注意，这里的事件名称没有"on",如鼠标单击事件click等</td>
+          </tr>
+          <tr>
+            <td>handle</td>
+            <td>事件句柄函数，用来处理事件的函数</td>
+          </tr>
+          <tr>
+            <td>useCapture</td>
+            <td>Boolean类型，是否使用捕获，一般用false</td>
+          </tr>
+        </table>
+      </li>
+      <li>attachEven()函数语法：
+          <br>
+          elementObjec.attachEvent( eventName, handle)
+      </li>
+      <li>
+        <table>
+          <tr>
+            <th>参数</th>
+            <th>说明</th>
+          </tr>
+          <tr>
+            <td>elementObject</td>
+            <td>DOM对象(即DOM元素)</td>
+          </tr>
+          <tr>
+            <td>eventName</td>
+            <td>事件名称。注意,与addEventListener()不同，这里的事件名称有"on"</td>
+          </tr>
+          <tr>
+            <td>handle</td>
+            <td>事件句柄函数，用来处理事件的函数</td>
+          </tr>
+        </table>
+        <br>
+        <p>注意：事件句柄函数是指<b>函数名</b>
+        </p>
+      </li>
+      <li>addEventListener()是标准的绑定事件监听函数的方法，是W3C所支持的，Chrome、FireFox、Opera、Safari、IE9.0及其以上版本都支持该函数；但是，IE8.0及其以下版本不支持该方法，它使用attachEvent()来绑定事件监听函数。所以，这种绑定事件的方法必须要处理浏览器兼容问题。</li>
+      <li>下面绑定事件的代码，进行了兼容性处理，能够被所有浏览器支持：
+        <br>
+        &lt;script&gt;
+        <br>
+        function addEvent(obj,type,handle){
+          <br>
+          &nbsp;&nbsp;&nbsp;try{//主流浏览器，IE9+
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;obj.addEventListener(type,handle,false);
+            <br>
+            &nbsp;&nbsp;&nbsp; }
+          catch(e){
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try{//IE8-
+                obj.attachEvent('on'+type,handle);
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+              catch(e){//早期浏览器
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;obj['on'+type] = handle;
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+              <br>
+              &nbsp;&nbsp;&nbsp;}
+              <br>
+            }
+          
+      <br>
+        &lt;/script&gt;
+      </li>
+      <li>上面使用try{...}catch(e){...}代替if...else...语句，避免浏览器出现错误提示</li>
+      <br>
+      <hr color="red">
+      <li>
+        例子：
+        <br>
+        addEventListener(document.getElementById("demo"),"click",myAlert);
+        <br>
+        function myAlert(){
+          <br>
+        alert("这是一个警告框");
+        }
+      </li>
+      <li>
+        <input type="button" value="点我" id="dem">
+        <script>
+          var dem = document.getElementById("dem");
+          dem.addEventListener("click",myAlert);
+        function myAlert(){
+        alert("这是一个警告框");
+        }
+        </script>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

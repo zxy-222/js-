@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <input type="button" value="click me" id="btn">
+</body>
+<script>
+  /**
+  * target：监听对象
+  * type： 监听函数类型
+  * func：监听函数
+  */
+  function addEventHandler(target,type,func){
+    if(target.addEventListener){
+      //监听IE9+，谷歌和火狐
+      target.addEventListener(type,func,false);
+    }else if(target.attachEvent){
+      target.attachEvent("on"+type,func);
+    }else{
+      target["on"+type] = func;
+    }
+  }
+  function removeEventHandler(target,type,func){
+    if(target.removeEventListener){
+      target.removeEventListener(type,func,false);
+    }else if(target.detachEvent){
+      target.detachEvent("on"+type,func);
+    }else {
+      delete target["on"+ type];
+    }
+  }
+  /*对事件监听函数以及监听事件移除函数兼容性处理的封装*/
+
+
+  var eventOne = function(){
+    alert("监听第一个事件");
+  }
+  function eventTwo(){
+    alert("监听第二个事件");
+  }
+  window.onload = function(){
+    var btn = document.getElementById("btn");
+    addEventHandler(btn,"click",eventOne);
+    addEventHandler(btn,"click",eventTwo);
+    addEventHandler(btn,"click",function(){
+      alert("监听第三个事件")
+    });
+    //取消第一个事件
+    removeEventHandler(btn,"click",eventOne);
+  }
+</script>
+</html>

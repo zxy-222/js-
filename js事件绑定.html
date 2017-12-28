@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  html,body {
+    margin:0;
+    padding: 0;
+  }
+  #btn,#bindEvent {
+    border: 0;
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin-top: 50px;
+    margin-left: 200px;
+    background-color: rgb(160, 80, 80);
+    border-radius: 50%;
+    font-size: 25px;
+  }
+  #bindEvent {
+    background-color: rgb(52, 108, 153);
+  }
+  </style>
+</head>
+<body>
+  <button id="btn">click me</button>
+  <button id="bindEvent">clcik me</button>
+</body>
+<script>
+  /*
+window.onload = function(){
+  var btn = document.getElementById("btn");
+  btn.onclick = function(){
+    alert("第一个事件");
+  }
+  btn.onclick = function(){
+    alert("第二个事件");
+  }
+  btn.onclick = function(){
+    alert("第三个事件");
+  }
+}*/
+//当同一个对象使用.onclick的写法触发多个方法的时候，后面的方法会把前面的方法覆盖掉，如上，当同一个对象绑定多个onclick事件时，只会执行最后绑定的方法。而用事件监听则不会有覆盖的现象，每个绑定的事件都会被执行
+
+/*原生态的事件绑定函数addEventListener*/
+/*
+var eventOne = function(){
+  alert("第一个监听事件");
+}
+function eventTwo(){
+  alert("第二个监听事件")
+}
+window.onload = function(){
+  //addEventListener:绑定函数
+  var btn = document.getElementById("btn");
+  btn.addEventListener("click",eventOne);
+  btn.addEventListener("click",eventTwo);
+}*/
+
+//采用事件监听给对象绑定方法后，可以解除相应的绑定
+/*
+var eventOne = function(){
+  alert("第一个监听事件");
+}
+function eventTwo(){
+  alert("第二个监听事件")
+}
+window.onload = function(){
+  //addEventListener:绑定函数
+  var btn = document.getElementById("btn");
+  btn.addEventListener("click",eventOne);
+  btn.addEventListener("click",eventTwo);
+  btn.removeEventListener("click",eventOne);
+}
+*/
+
+//解除绑定事件的时候一定要用函数的句柄(即函数名)，把整个函数写上是无法解除的。
+//错误写法:
+/*btn.removeEventListener("click",function(){
+  alert(11);
+});*/
+
+//总结：对函数进行封装后的监听事件如下，兼容各大主流浏览器。
+/**
+*addEventListener：监听DOM元素的事件
+*target：监听对象
+*type：监听函数类型，如click，mouseover
+*func：监听函数
+*/
+function addEventHandler (target,type,func){
+  if(target.addEventListener){
+    //监听IE9+、Chrome、Firefox
+    target.addEventListener(type,func,false);
+  }else if(target.attachEvent){
+    target.attachEvent("on" +type,func);
+  }else {
+    target["on" + type] = func;
+  }
+}
+
+/**
+*removeEventListener：监听DOM元素的事件
+*target：监听对象
+*type：监听函数类型，如click，mouseover
+*func：监听函数
+*/
+function removeEventHandler (target,type,func){
+  if(target.removeEventListener){
+    //监听IE9+、Chrome、Firefox
+    target.removeEventListener(type,func,false);
+  }else if(target.detachEvent){
+    target.detachEvent("on" +type,func);
+  }else {
+    delete target["on" + type];
+  }
+}
+var eventOne = function() {
+  alert("第一个监听事件");
+}
+function eventTwo(){
+  alert("第二个监听事件")
+}
+window.onload = function(){
+  var bindEventBtn = document.getElementById("bindEvent");
+  //监听eventOne事件
+  addEventHandler(bindEventBtn,"click",eventOne);
+  //监听eventTwo事件
+  addEventHandler(bindEventBtn,"click",function(){
+    alert("第三个监听事件")
+  });
+  //取消第一个监听事件
+   //取消第一个监听事件 
+ removeEventHandler(bindEventBtn,"click",eventOne); 
+ //取消第二个监听事件 
+ removeEventHandler(bindEventBtn,"click",eventTwo); 
+}
+</script>
+</html>
